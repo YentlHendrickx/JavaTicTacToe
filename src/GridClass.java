@@ -14,6 +14,8 @@ public class GridClass extends JPanel{
 //        panel.setPreferredSize(new Dimension(width, height));
 //        panel.setLayout(new GridLayout(3,3));
 
+        Dimension window = new Dimension(width, height);
+        frame.getContentPane().setPreferredSize(window);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 //        frame.add(panel);

@@ -22,6 +22,14 @@ public class Square {
         this.userType = null;
     }
 
+    public MoveType getMType() {
+        return this.mType;
+    }
+
+    public void setMType(MoveType mType) {
+        this.mType = mType;
+    }
+
     public void setState(boolean state) {
         if (!this.locked) this.state = state;
     }
@@ -59,10 +67,11 @@ public class Square {
     }
 
     public int getColumn() {
-        return ((this.id % 3) + 1);
+        return ((this.id / 3) + 1);
     }
 
     public int getRow() {
-        return ((this.id / 3) + 1);
+
+        return ((this.id % 3) + 1);
     }
 }

@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
-public class GridUpdater extends JPanel{
+public class GridUpdater extends JPanel {
 
     public Square[] squares;
 
@@ -19,20 +21,33 @@ public class GridUpdater extends JPanel{
         this.setPreferredSize(new Dimension(frameWidth, frameHeight));
     }
 
+    public void updateGrid(Square[] squares) {
+        this.squares = squares;
+    }
+
     public void updateGrid(Square[] squares, int moveSize) {
         this.squares = squares;
         this.moveSize = moveSize;
     }
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Get size of entire grid, divide by 3 to get one grid square (3x3)
-        int squareXMiddle = this.frameWidth / 24;
+        int squareXMiddle = this.frameWidth / 3;
         int squareYMiddle = this.frameHeight / 3;
 
-        for (Square square : squares) {
+        g.drawLine(squareXMiddle, 0, squareXMiddle, this.frameHeight);
+        g.drawLine(squareXMiddle * 2, 0, squareXMiddle * 2, this.frameHeight);
+        g.drawLine(0, squareYMiddle, this.frameWidth, squareYMiddle);
+        g.drawLine(0, squareYMiddle * 2, this.frameWidth, squareYMiddle * 2);
+//        g.drawLine(originX, originY + this.moveSize, originX + this.moveSize, originY);
+
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(2));
+
+        // Loop through active squares
+        Arrays.stream(squares).filter(Square::getState).forEach( square -> {
             // Get square position
             int row = square.getRow();
             int column = square.getColumn();
@@ -44,9 +59,12 @@ public class GridUpdater extends JPanel{
             originX -= this.moveSize / 2;
             originY -= this.moveSize / 2;
 
-            g.drawOval(originX, originY, this.moveSize, this.moveSize);
-//            System.out.println("Drawing oval: " + originX + " " + originY);
-        }
-
+            if (square.getMType() == MoveType.Cross) {
+                g2.drawLine(originX, originY, originX + this.moveSize, originY + this.moveSize);
+                g2.drawLine(originX, originY + this.moveSize, originX + this.moveSize, originY);
+            } else {
+                g2.drawOval(originX, originY, this.moveSize, this.moveSize);
+            }
+        });
     }
 }
