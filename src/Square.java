@@ -3,6 +3,7 @@ public class Square {
     private int id;
     private boolean state;
     private boolean locked;
+    private MoveType mType;
 
     // User type, 1 = player 1, 2 = player 2, 3 = computer
     public String userType;
@@ -37,10 +38,6 @@ public class Square {
         this.locked = !this.locked;
     }
 
-    public void setUserType(String type) {
-        this.userType = userType;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -59,5 +56,13 @@ public class Square {
 
     public boolean getLocked() {
         return this.locked;
+    }
+
+    public int getColumn() {
+        return ((this.id % 3) + 1);
+    }
+
+    public int getRow() {
+        return ((this.id / 3) + 1);
     }
 }

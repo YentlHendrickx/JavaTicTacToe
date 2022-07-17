@@ -4,10 +4,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 public class Main {
-    public static final int FRAME_WIDTH = 300, FRAME_HEIGHT = 300;
-    public static Square[] gridSquares = new Square[9];
+    public static final int FRAME_WIDTH = 2000, FRAME_HEIGHT = 300;
+    public static Square[] gridSquares = new Square[72];
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         for (int i = 0; i < gridSquares.length; i ++) {
             gridSquares[i] = new Square();
@@ -15,20 +15,33 @@ public class Main {
         }
 
         GridClass.DrawBoard(FRAME_WIDTH, FRAME_HEIGHT);
-        JPanel panel = GridClass.getPanel();
+        JFrame frame = GridClass.getFrame();
+        frame.getGraphics().setClip(0, 0, 300, 300);
 
-        GridUpdater gU = new GridUpdater();
-////        gU.testDraw(50, panel.getGraphics());
-//        gU.testCircle(50, 50, 10, panel.getGraphics());
-//        panel.add(new GridUpdater());
+        GridUpdater gU = new GridUpdater(FRAME_WIDTH, FRAME_HEIGHT, 99, gridSquares);
+        frame.add(gU);
+        frame.pack();
 
-//        gU.drawO(7, 10, panel);
-        for (int i =0 ;i < 9; i++) {
-            gU.drawO(i,10, panel);
+        for (int j = 0; j < 10; j++) {
+            for (int i =0 ; i < 500; i++) {
+                gU.updateGrid(gridSquares, i);
+                frame.repaint();
+                Thread.sleep(5);
+            }
+            for (int i = 500 ; i > 0; i--) {
+                gU.updateGrid(gridSquares, i);
+                frame.repaint();
+                Thread.sleep(1);
+            }
+
         }
-//        panel.add(new GridUpdater());
+
+
+//        frame.revalidate();
+//        frame.repaint();
+
         // Add click listener to panel
-        panel.addMouseListener(new MouseAdapter() {
+        frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 System.out.println(getBox(e.getX(), e.getY()));

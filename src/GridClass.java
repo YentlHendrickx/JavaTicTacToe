@@ -5,17 +5,18 @@ public class GridClass extends JPanel{
     public static JFrame frame;
     public static JPanel panel;
 
+    private static GridClass gridClass;
+
     public static void DrawBoard(int width, int height) {
         frame = new JFrame();
-        panel = new JPanel();
+//        panel = new JPanel();
 
-        panel.setPreferredSize(new Dimension(width, height));
-        panel.setLayout(new GridLayout(3,3));
+//        panel.setPreferredSize(new Dimension(width, height));
+//        panel.setLayout(new GridLayout(3,3));
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        panel.add(new GridUpdater());
-        frame.add(panel);
+//        frame.add(panel);
         frame.pack();
         frame.setVisible(true);
     }

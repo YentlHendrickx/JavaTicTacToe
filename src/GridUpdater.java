@@ -1,43 +1,52 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
-public class GridUpdater extends GridClass{
+public class GridUpdater extends JPanel{
+
+    public Square[] squares;
+
+    public int frameWidth;
+    public int frameHeight;
+    public int moveSize;
+
+    public GridUpdater(int frameWidth, int frameHeight, int moveSize, Square[] squares) {
+        this.squares = squares;
+        this.frameWidth = frameWidth;
+        this.frameHeight = frameHeight;
+        this.moveSize = moveSize;
+
+        this.setPreferredSize(new Dimension(frameWidth, frameHeight));
+    }
+
+    public void updateGrid(Square[] squares, int moveSize) {
+        this.squares = squares;
+        this.moveSize = moveSize;
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawOval(20, 20, 10, 10);
-    }
+        // Get size of entire grid, divide by 3 to get one grid square (3x3)
+        int squareXMiddle = this.frameWidth / 24;
+        int squareYMiddle = this.frameHeight / 3;
 
-    public void testDraw(int x, Graphics g) {
-//        this.paintComponent(g, x);
-        super.paintComponent(g);
-        g.drawOval(x, x, 10, 10);
-        super.repaint();
-    }
+        for (Square square : squares) {
+            // Get square position
+            int row = square.getRow();
+            int column = square.getColumn();
 
-    public void testCircle(int x, int y, int size, Graphics g) {
-        super.paintComponent(g);
-        g.drawOval(x, y, size, size);
-        super.repaint();
-    }
+            // Get actual position on the board
+            int originX = ((row - 1) * squareXMiddle) + squareXMiddle / 2;
+            int originY = ((column - 1) * squareYMiddle) + squareYMiddle / 2;
 
-    public void drawO(int gridId, int size, JPanel panel) {
-        // First we need to figure x and y coordinates of our origin
-        int xSize = panel.getX();
-        int ySize = panel.getY();
+            originX -= this.moveSize / 2;
+            originY -= this.moveSize / 2;
 
-        // Figure out what row we are on
-        int row = (gridId / 3) + 1;
-
-        // Figure out our column
-        int column = (gridId % 3) + 1;
-
-        // Do calculations to determine position and draw 0
-
-        System.out.println("Y is " + row);
-        System.out.println("x is " + column);
+            g.drawOval(originX, originY, this.moveSize, this.moveSize);
+//            System.out.println("Drawing oval: " + originX + " " + originY);
+        }
 
     }
-
 }
